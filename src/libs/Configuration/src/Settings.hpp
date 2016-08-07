@@ -7,8 +7,10 @@
 
 // Data type
 struct TimeSlot {
-  unsigned int start;
-  unsigned int end;
+  unsigned int startHour;
+  unsigned int startMinute;
+  unsigned int endHour;
+  unsigned int endMinute;
 };
 
 struct DayConfig {

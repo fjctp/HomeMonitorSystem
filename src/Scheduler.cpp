@@ -32,8 +32,9 @@ bool Scheduler::check(bool force) {
     }
   }
 
-  //LOG(DEBUG) << weekdays[now_info->tm_wday] << "==" << dcfg.name << "?";
-  return check_weekday() && check_hour() && check_minute();
+  bool check_time_result = check_time();
+  LOG(DEBUG) << ">>>>check_time: " << check_time_result;
+  return check_weekday() && check_time_result;
 }
 
 // call to update object's variables with current time
@@ -47,15 +48,51 @@ bool Scheduler::check_weekday() {
     return true;
   return false;
 }
-bool Scheduler::check_hour() {
+bool Scheduler::check_time()
+{
+  LOG(DEBUG) << "CHECK_TIME";
   for (size_t i = 0; i < dcfg.timeslots.size(); i++) {
-    if ((dcfg.timeslots[i].start <= (unsigned int)now_info->tm_hour) &&
-      ((unsigned int)now_info->tm_hour < dcfg.timeslots[i].end)) {
+    unsigned int nowHour = (unsigned int)now_info->tm_hour;
+    unsigned int nowMinute = (unsigned int)now_info->tm_min;
+
+    unsigned int startHour = dcfg.timeslots[i].startHour;
+    unsigned int endHour = dcfg.timeslots[i].endHour;
+    unsigned int startMinute = dcfg.timeslots[i].startMinute;
+    unsigned int endMinute = dcfg.timeslots[i].endMinute;
+
+    LOG(DEBUG) << ">>" << i;
+    LOG(DEBUG) << "Now: " << nowHour << ":" << nowMinute;
+    LOG(DEBUG) << "Hour: " << startHour << "->" << endHour;
+    LOG(DEBUG) << "Minute: " << startMinute << "->" << endMinute;
+
+    LOG(DEBUG) << check_hour(nowHour, startHour, endHour);
+    LOG(DEBUG) << check_minute(nowMinute, startMinute, endMinute);
+
+    bool hour_minute_result = (check_hour(nowHour, startHour, endHour) &&
+      check_minute(nowMinute, startMinute, endMinute));
+    bool hour_result = check_hour(nowHour, startHour, endHour);
+
+    LOG(DEBUG) << "hour_minute_result: " << hour_minute_result;
+    LOG(DEBUG) << "hour_result: " << hour_result;
+
+    if (((nowHour == startHour) || (nowHour == endHour)) && hour_minute_result)
+      // at the starting or ending point, check hour and minute
       return true;
-    }
+    else if (((nowHour >= startHour) && (nowHour < endHour)) && hour_result)
+      // in between the schedule, check hour only
+      return true;
   }
   return false;
 }
-bool Scheduler::check_minute() {
-  return true;
+bool Scheduler::check_hour(unsigned int nowHour, unsigned int startHour, unsigned int endHour)
+{
+  if((startHour <= nowHour) && (nowHour >= endHour))
+    return true;
+  return false;
+}
+bool Scheduler::check_minute(unsigned int nowMinute, unsigned int startMinute, unsigned int endMinute)
+{
+  if ((startMinute <= nowMinute) && (nowMinute <= endMinute))
+    return true;
+  return false;
 }

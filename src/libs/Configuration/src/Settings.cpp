@@ -4,16 +4,32 @@
 #include "easylogging++.h"
 #include "Settings.hpp"
 
+using namespace std;
 
 // extraction operator for the structures
 void operator >> (const YAML::Node& node, TimeSlot& ts) {
   LOG(DEBUG) << "Parsing timeslot";
-  ts.start = node["start"].as<unsigned int>();
-  ts.end = node["end"].as<unsigned int>();
+  string start = node["start"].as<string>();
+  string end = node["end"].as<string>();
+  LOG(DEBUG) << start;
+  LOG(DEBUG) << end;
+
+  size_t index = start.find(':');
+
+  LOG(DEBUG) << "Started parsing";
+  if (index != string::npos) {
+    ts.startHour = stoi(start.substr(0, index));
+    ts.startMinute = stoi(start.substr(index + 1, start.length() - index));
+    ts.endHour = stoi(end.substr(0, index));
+    ts.endMinute = stoi(end.substr(index + 1, end.length() - index));
+
+    LOG(DEBUG) << "Start: " << ts.startHour << ":" << ts.startMinute;
+    LOG(DEBUG) << "End: " << ts.endHour << ":" << ts.endMinute;
+  }
 }
 
 void operator >> (const YAML::Node& node, DayConfig& dcfg) {
-  dcfg.name = node["weekday"].as<std::string>();
+  dcfg.name = node["weekday"].as<string>();
   LOG(DEBUG) << "Parsing schedule for " << dcfg.name;
 
   const YAML::Node& sn = node["timeslots"];
@@ -37,13 +53,13 @@ void operator >> (const YAML::Node& node, OutputConfig& ocfg) {
   LOG(DEBUG) << "Parsing output settings";
 
   // directory setting
-  ocfg.dir = node["dir"].as<std::string>();
+  ocfg.dir = node["dir"].as<string>();
 
   // file setting (picture and video)
-  ocfg.prefix = node["filename_prefix"].as<std::string>();
-  ocfg.format_string = node["filename_format_string"].as<std::string>();
-  ocfg.picture_ext = node["picture_ext"].as<std::string>();
-  ocfg.video_ext = node["video_ext"].as<std::string>();
+  ocfg.prefix = node["filename_prefix"].as<string>();
+  ocfg.format_string = node["filename_format_string"].as<string>();
+  ocfg.picture_ext = node["picture_ext"].as<string>();
+  ocfg.video_ext = node["video_ext"].as<string>();
 }
 
 void operator >> (const YAML::Node& node, GeneralConfig& gcfg) {

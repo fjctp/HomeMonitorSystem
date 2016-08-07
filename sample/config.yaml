@@ -24,39 +24,39 @@ output:
 schedules:
 - weekday: Sun
   timeslots:
-  - start: 1
-    end: 10
+  - start: "0:00"
+    end: "10:30"
 - weekday: Mon
   timeslots:
-  - start: 1
-    end: 7
-  - start: 9
-    end: 18
+  - start: "0:00"
+    end: "8:00"
+  - start: "10:00"
+    end: "18:00"
 - weekday: Tue
   timeslots:
-  - start: 1
-    end: 7
-  - start: 9
-    end: 18
+  - start: "0:00"
+    end: "8:00"
+  - start: "10:00"
+    end: "18:00"
 - weekday: Wed
   timeslots:
-  - start: 1
-    end: 7
-  - start: 9
-    end: 18
+  - start: "0:00"
+    end: "8:00"
+  - start: "10:00"
+    end: "18:00"
 - weekday: Thu
   timeslots:
-  - start: 1
-    end: 7
-  - start: 9
-    end: 18
+  - start: "0:00"
+    end: "8:00"
+  - start: "10:00"
+    end: "18:00"
 - weekday: Fri
   timeslots:
-  - start: 1
-    end: 7
-  - start: 9
-    end: 18
+  - start: "0:00"
+    end: "8:00"
+  - start: "10:00"
+    end: "18:00"
 - weekday: Sat
   timeslots:
-  - start: 1
-    end: 9
+  - start: "0:00"
+    end: "8:00"

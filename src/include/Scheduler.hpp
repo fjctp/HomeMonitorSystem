@@ -18,8 +18,9 @@ private:
   void update();
 
   bool check_weekday();
-  bool check_hour();
-  bool check_minute();
+  bool check_time();
+  bool check_hour(unsigned int nowHour, unsigned int startHour, unsigned int endHour);
+  bool check_minute(unsigned int nowMinute, unsigned int startMinute, unsigned int endMinute);
 
   ScheduleConfig scfg;
   DayConfig dcfg;

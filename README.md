@@ -1,5 +1,6 @@
 # Surveillance System
-Provide basic motion detection and video recording capability.
+Provide basic motion detection and video recording capability. It is tested on Windows 10 and Raspberry Pi 2.
+For RPi, please make sure NEON support is enabled when compiling OpenCV library.
 
 ## Requirement
 1. cmake >= 2.8
@@ -27,3 +28,10 @@ Assume that you have the program and config.yaml in the same folder.
 ```bash
 Nest -c config.yaml
 ```
+
+## To-Do
+1. Add unit test
+2. Add validation on yaml file
+3. Add multiple cameras support
+4. Upload to cloud (Dropbox? maybe a seperated project)
+5. Package it into Docker?

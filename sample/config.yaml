@@ -1,15 +1,17 @@
 general:
   camera_id: 0
   record_sec: 10
-  
+
   # reduce the frame size for processing
-  reduction_factor: 3
+  reduction_factor: 2
   # use for background extractor
+  # default: -1
   adaptive_rate: -1
   # use for morphology
-  # incease it to reduce noise, but less sensitive to movement
-  kernel_size: 3
+  # incease: reduce noise, but less sensative to movement
+  kernel_size: 6
   # use for motion detection
+  # if the contour area is bigger than defined, there is movement
   min_contour_area: 350
 
 output:

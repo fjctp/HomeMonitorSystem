@@ -58,8 +58,8 @@ int Camera::ready()
 
 void Camera::get(myMat& mat)
 {
-  resetCount();
   frame.copyTo(mat);
+  resetCount();
 }
 
 void Camera::thread_update()
@@ -73,7 +73,6 @@ void Camera::thread_update()
 
 void Camera::set()
 {
-  frame.release();
   cam >> frame;
   timer0.reset();
   incrementCount();

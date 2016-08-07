@@ -1,0 +1,60 @@
+general:
+  camera_id: 0
+  record_sec: 10
+  
+  # reduce the frame size for processing
+  reduction_factor: 3
+  # use for background extractor
+  adaptive_rate: -1
+  # use for morphology
+  # incease it to reduce noise, but less sensitive to movement
+  kernel_size: 3
+  # use for motion detection
+  min_contour_area: 350
+
+output:
+  dir: "./" # must include "/" at the end
+  filename_prefix: "test_"
+  filename_format_string: "%m%d%y_%H%M%S"
+  picture_ext: ".png"
+  video_ext: ".avi"
+
+schedules:
+- weekday: Sun
+  timeslots:
+  - start: 1
+    end: 10
+- weekday: Mon
+  timeslots:
+  - start: 1
+    end: 7
+  - start: 9
+    end: 18
+- weekday: Tue
+  timeslots:
+  - start: 1
+    end: 7
+  - start: 9
+    end: 18
+- weekday: Wed
+  timeslots:
+  - start: 1
+    end: 7
+  - start: 9
+    end: 18
+- weekday: Thu
+  timeslots:
+  - start: 1
+    end: 7
+  - start: 9
+    end: 18
+- weekday: Fri
+  timeslots:
+  - start: 1
+    end: 7
+  - start: 9
+    end: 18
+- weekday: Sat
+  timeslots:
+  - start: 1
+    end: 9

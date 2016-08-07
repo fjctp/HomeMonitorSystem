@@ -1,0 +1,24 @@
+#ifndef CONFIG_HPP
+#define CONFIG_HPP
+#include <opencv2/opencv.hpp>
+
+/* User Variables from CMake*/
+#define USE_OPENCL @Use_OpenCL@
+#define SHOW_WINDOWS @Show_Windows@
+
+/* Define an alias for cv::Mat or cv::UMat */
+#if USE_OPENCL
+#include <opencv2/core/ocl.hpp>
+typedef cv::UMat myMat;
+#else
+typedef cv::Mat myMat;
+#endif // USE_OPENCL
+
+/* Define inline functions */
+inline void my_imshow(const char* windowsname, myMat frame) {
+#if SHOW_WINDOWS
+  cv::imshow(windowsname, frame);
+#endif // SHOW_WINDOWS
+}
+
+#endif 

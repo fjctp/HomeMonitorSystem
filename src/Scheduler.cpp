@@ -86,13 +86,15 @@ bool Scheduler::check_time()
 }
 bool Scheduler::check_hour(unsigned int nowHour, unsigned int startHour, unsigned int endHour)
 {
-  if((startHour <= nowHour) && (nowHour >= endHour))
+  if((nowHour >= startHour) && (nowHour <= endHour))
+    // if hour is within range
     return true;
   return false;
 }
 bool Scheduler::check_minute(unsigned int nowMinute, unsigned int startMinute, unsigned int endMinute)
 {
-  if ((startMinute <= nowMinute) && (nowMinute <= endMinute))
+  if ((nowMinute >= startMinute) && (nowMinute < endMinute))
+    // if minute is within range
     return true;
   return false;
 }

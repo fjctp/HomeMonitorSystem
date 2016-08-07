@@ -14,14 +14,15 @@ void operator >> (const YAML::Node& node, TimeSlot& ts) {
   LOG(DEBUG) << start;
   LOG(DEBUG) << end;
 
-  size_t index = start.find(':');
+  size_t seperatorIndexForStart = start.find(':');
+  size_t seperatorIndexForEnd = end.find(':');
 
   LOG(DEBUG) << "Started parsing";
-  if (index != string::npos) {
-    ts.startHour = stoi(start.substr(0, index));
-    ts.startMinute = stoi(start.substr(index + 1, start.length() - index));
-    ts.endHour = stoi(end.substr(0, index));
-    ts.endMinute = stoi(end.substr(index + 1, end.length() - index));
+  if ((seperatorIndexForStart != string::npos) && (seperatorIndexForEnd != string::npos)) {
+    ts.startHour = stoi(start.substr(0, seperatorIndexForStart));
+    ts.startMinute = stoi(start.substr(seperatorIndexForStart + 1, start.length() - seperatorIndexForStart));
+    ts.endHour = stoi(end.substr(0, seperatorIndexForEnd));
+    ts.endMinute = stoi(end.substr(seperatorIndexForEnd + 1, end.length() - seperatorIndexForEnd));
 
     LOG(DEBUG) << "Start: " << ts.startHour << ":" << ts.startMinute;
     LOG(DEBUG) << "End: " << ts.endHour << ":" << ts.endMinute;

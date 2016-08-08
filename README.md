@@ -32,6 +32,8 @@ Nest -c config.yaml
 ## To-Do
 1. Add unit test
 2. Add validation on yaml file
-3. Add multiple cameras support
-4. Upload to cloud (Dropbox? maybe a seperated project)
-5. Package it into Docker?
+3. Add timestamp to video
+4. Add a method to terminate the program peacefully
+5. Add multiple cameras support
+6. Upload to cloud (Dropbox? maybe a seperated project)
+7. Package it into Docker?

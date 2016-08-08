@@ -32,7 +32,7 @@ struct OutputConfig {
 
 struct GeneralConfig {
   unsigned int camera_id;
-  unsigned int record_sec;
+  float record_sec;
   unsigned int reduction_factor;
   unsigned int min_contour_area;
   float adaptive_rate;

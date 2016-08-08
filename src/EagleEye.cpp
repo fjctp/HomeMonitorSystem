@@ -54,6 +54,10 @@ void EagleEye::thread_main() {
 
   while (!status.check(status.TERMINATE)) {
     while (s.check() && !status.check(status.TERMINATE)) {
+      if (status.check(status.STANDBY)) {
+        status.set(status.MONITOR);
+        status.confirm();
+      }
       thread_loop();
     }
 
@@ -94,7 +98,8 @@ void EagleEye::thread_loop() {
       status.confirm();
     }
 
-    // keep recording if time <= X sec, else stop it.
+    // continue saving video if in RECORD mode, 
+    // otherwise close the file
     if (status.check(status.RECORD))
       fw.record(filetimestamp, frame);
     else if (!status.check(status.RECORD))

@@ -39,7 +39,7 @@ protected:
   Status status;
 
   unsigned int cam_id;
-  unsigned int record_sec;
+  float record_sec;
   myMat frame;
   Camera cam;
 };

@@ -7,9 +7,10 @@
 
 using namespace std;
 
-class Scheduler: public Clock {
+class Scheduler: private Clock {
 public:
   Scheduler();
+  virtual ~Scheduler();
 
   void initialize(ScheduleConfig newscfg, string new_format_str = "%m%d%y_%H%M%S");
   bool check(bool force = false);
@@ -19,8 +20,6 @@ private:
 
   bool check_weekday();
   bool check_time();
-  bool check_hour(unsigned int nowHour, unsigned int startHour, unsigned int endHour);
-  bool check_minute(unsigned int nowMinute, unsigned int startMinute, unsigned int endMinute);
 
   ScheduleConfig scfg;
   DayConfig dcfg;

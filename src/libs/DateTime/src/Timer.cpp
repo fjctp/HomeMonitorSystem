@@ -13,10 +13,10 @@ void Timer::initialize() {
 void Timer::reset() {
   t0 = clock();
 }
-float Timer::get_dt_msec()
+double Timer::get_dt_msec()
 {
   return get_dt_msec()*1000.0;
 }
-float Timer::get_dt_sec() {
-  return ((float)clock() - (float)t0) / CLOCKS_PER_SEC;
+double Timer::get_dt_sec() {
+  return ((double)clock() - (double)t0) / (double) CLOCKS_PER_SEC;
 }

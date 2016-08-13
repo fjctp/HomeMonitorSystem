@@ -10,8 +10,8 @@ public:
   virtual void initialize();
 
   virtual void reset();
-  virtual float get_dt_msec();
-  virtual float get_dt_sec();
+  virtual double get_dt_msec();
+  virtual double get_dt_sec();
 
 private:
   clock_t t0;

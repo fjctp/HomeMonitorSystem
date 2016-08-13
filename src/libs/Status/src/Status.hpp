@@ -12,6 +12,8 @@ public:
   enum States { TERMINATE = -1, STANDBY, MONITOR, RECORD };
 
   Status();
+  virtual ~Status();
+
   virtual void initialize();
 
   virtual bool set(int newState);

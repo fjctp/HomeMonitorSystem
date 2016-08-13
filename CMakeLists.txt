@@ -25,6 +25,13 @@ set(YAML_CPP_LIBRARYDIR "${YAML_CPP_LIBRARYDIR}" CACHE PATH "YAML library direct
 
 # set CXX flags
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DELPP_THREAD_SAFE")
+#if(CMAKE_COMPILER_IS_GNUCXX)
+#    message(STATUS "GCC detected, adding compile flags")
+#    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+#    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused -Wuninitialized -Wdisabled-optimization")
+#    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wfloat-equal -Wfloat-conversion -Wdouble-promotion")
+#    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wsign-conversion")
+#endif(CMAKE_COMPILER_IS_GNUCXX)
 
 # add directories that contains source/libraries
 include_directories(${Boost_INCLUDE_DIR})

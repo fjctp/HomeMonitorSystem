@@ -7,6 +7,10 @@
 
 using namespace std;
 
+/*
+  combine two frames with the same size together side-by-side into one frame
+  @public
+*/
 void ImageProcessor::combine(myMat lframe, myMat rframe, myMat& combined_frame) {
   cv::Size lsize = lframe.size();
   cv::Size rsize = rframe.size();
@@ -41,14 +45,14 @@ void ImageProcessor::initialize(GeneralConfig newgcfg) {
   myKernel = cv::getStructuringElement(cv::MorphShapes::MORPH_ELLIPSE, ksize);
 }
 
-bool ImageProcessor::process(myMat frame) {
+double ImageProcessor::process(myMat frame) {
   // pre-processing
   cv::Size ss = frame.size();
   cv::Size s(ss.width / gcfg.reduction_factor, ss.height / gcfg.reduction_factor);
   cv::resize(frame, resizedFrame, s);
 
   // processing
-  bool detected = detectMotion(resizedFrame);
+  double detected_contour_area = detectMotion(resizedFrame);
 
   // post-processing
   colorFrame = frame;
@@ -63,7 +67,7 @@ bool ImageProcessor::process(myMat frame) {
   cv::waitKey(1); // call to update windows
 #endif
 
-  return detected;
+  return detected_contour_area;
 }
 
 void ImageProcessor::release() {
@@ -73,7 +77,7 @@ void ImageProcessor::release() {
     myKernel.release();
 }
 
-bool ImageProcessor::detectMotion(myMat frame) {
+double ImageProcessor::detectMotion(myMat frame) {
   ptr2mog2->apply(frame, meshFrame, gcfg.adaptive_rate);
 
   // noise reduction
@@ -81,14 +85,23 @@ bool ImageProcessor::detectMotion(myMat frame) {
   cv::erode(meshFrame.clone(), meshFrame, myKernel, cv::Point(-1, -1), 2);
   //cv::dilate(meshFrame.clone(), meshFrame, myKernel);
 
+  // check contour's size
   vector<myMat> contours;
   cv::findContours(meshFrame.clone(), contours, cv::RETR_EXTERNAL,
     cv::CHAIN_APPROX_SIMPLE);
   for (size_t i = 0; i<contours.size(); i++) {
-    if (cv::contourArea(contours[i]) >= gcfg.min_contour_area) {
-      return true;
+    double contour_area = cv::contourArea(contours[i]);
+    if (contour_area > gcfg.min_contour_area) {
+      // draw a rectangle around the contour
+      myMat contour_poly;
+      cv::approxPolyDP(contours[i], contour_poly, 3, true);
+      cv::Rect contour_rect = cv::boundingRect(contour_poly);
+
+      cv::Scalar color = cv::Scalar(0, 255, 0); // green
+      cv::rectangle(resizedFrame, contour_rect.tl(), contour_rect.br(), color);
+      return contour_area;
     }
   }
-  return false;
+  return -1;
 
 }

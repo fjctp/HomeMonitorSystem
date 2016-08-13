@@ -7,10 +7,8 @@
 
 // Data type
 struct TimeSlot {
-  unsigned int startHour;
-  unsigned int startMinute;
-  unsigned int endHour;
-  unsigned int endMinute;
+  int startTime;
+  int endTime;
 };
 
 struct DayConfig {
@@ -31,12 +29,12 @@ struct OutputConfig {
 };
 
 struct GeneralConfig {
-  unsigned int camera_id;
-  float record_sec;
-  unsigned int reduction_factor;
-  unsigned int min_contour_area;
-  float adaptive_rate;
-  unsigned int kernel_size;
+  int camera_id;
+  double record_sec;
+  int reduction_factor;
+  double min_contour_area;
+  double adaptive_rate;
+  int kernel_size;
 };
 
 struct Setting {
@@ -53,5 +51,14 @@ void operator >> (const YAML::Node& node, ScheduleConfig& scfg);
 void operator >> (const YAML::Node& node, OutputConfig& ocfg);
 void operator >> (const YAML::Node& node, GeneralConfig& gcfg);
 void operator >> (const YAML::Node& node, Setting& syscfg);
+
+
+// insertion operator for the structures
+//void operator << (const YAML::Node& node, TimeSlot ts);
+//void operator << (const YAML::Node& node, DayConfig dcfg);
+//void operator << (const YAML::Node& node, ScheduleConfig scfg);
+//void operator << (const YAML::Node& node, OutputConfig ocfg);
+//void operator << (const YAML::Node& node, GeneralConfig gcfg);
+//void operator << (const YAML::Node& node, Setting syscfg);
 
 #endif // !SETTINGS_HPP

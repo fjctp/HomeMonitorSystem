@@ -9,6 +9,7 @@ using namespace std;
 class Clock {
 public:
   Clock();
+  virtual ~Clock();
   virtual void initialize(string new_format_str = "%m%d%y_%H%M%S");
   virtual string now2string();
 

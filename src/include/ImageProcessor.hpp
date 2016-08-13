@@ -13,7 +13,7 @@ public:
   ~ImageProcessor();
 
   void initialize(GeneralConfig newgcfg);
-  bool process(myMat frame);
+  double process(myMat frame);
   void release();
   
   myMat colorFrame;
@@ -24,7 +24,7 @@ public:
   cv::Mat myKernel;
 
 protected:
-  bool detectMotion(myMat frame);
+  double detectMotion(myMat frame);
   
   GeneralConfig gcfg;
   cv::Ptr<cv::BackgroundSubtractorMOG2> ptr2mog2;

@@ -30,9 +30,9 @@ void Nest::start(Setting s) {
   // main loop, not doing anything
   // slow down to preserve resource
   while (true) {
-    this_thread::sleep_for(1s);
+    this_thread::sleep_for(chrono::seconds(1));
   }
-  LOG(INFO) << "Exit";
+  LOG(INFO) << "program exit";
 }
 
 void Nest::release() {

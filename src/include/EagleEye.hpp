@@ -4,7 +4,7 @@
 #include <string>
 
 #include "Settings.hpp"
-#include "Camera.hpp"
+#include "FrameGrabber.hpp"
 #include "Scheduler.hpp"
 #include "ImageProcessor.hpp"
 #include "FrameWriter.hpp"
@@ -21,7 +21,7 @@ public:
   thread::id start(GeneralConfig newgcfg, OutputConfig newocfg, ScheduleConfig newscfg);
   void release();
 
-protected:
+private:
   /*
    * thread        runs schedule_loop until the program/system shuts down
    * schedule_loop runs process_loop until current time is not on the schedule
@@ -38,10 +38,10 @@ protected:
   Scheduler s;
   Status status;
 
-  unsigned int cam_id;
-  float record_sec;
+  int cam_id;
+  double record_sec;
   myMat frame;
-  Camera cam;
+  FrameGrabber camFrameGrabber;
 };
 
 #endif

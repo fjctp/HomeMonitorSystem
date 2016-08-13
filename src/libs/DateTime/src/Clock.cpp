@@ -7,6 +7,9 @@ using namespace std;
 Clock::Clock() {
   update();
 }
+Clock::~Clock() {
+  
+}
 
 void Clock::initialize(string new_format_str) {
   format_str = new_format_str;

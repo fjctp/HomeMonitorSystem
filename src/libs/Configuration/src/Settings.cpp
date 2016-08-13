@@ -6,26 +6,28 @@
 
 using namespace std;
 
-// extraction operator for the structures
+/**************************************************/
+/***** extraction operator for the structures *****/
+
 void operator >> (const YAML::Node& node, TimeSlot& ts) {
   LOG(DEBUG) << "Parsing timeslot";
   string start = node["start"].as<string>();
   string end = node["end"].as<string>();
-  LOG(DEBUG) << start;
-  LOG(DEBUG) << end;
 
   size_t seperatorIndexForStart = start.find(':');
   size_t seperatorIndexForEnd = end.find(':');
 
-  LOG(DEBUG) << "Started parsing";
   if ((seperatorIndexForStart != string::npos) && (seperatorIndexForEnd != string::npos)) {
-    ts.startHour = stoi(start.substr(0, seperatorIndexForStart));
-    ts.startMinute = stoi(start.substr(seperatorIndexForStart + 1, start.length() - seperatorIndexForStart));
-    ts.endHour = stoi(end.substr(0, seperatorIndexForEnd));
-    ts.endMinute = stoi(end.substr(seperatorIndexForEnd + 1, end.length() - seperatorIndexForEnd));
+    int startHour = stoi(start.substr(0, seperatorIndexForStart));
+    int startMinute = stoi(start.substr(seperatorIndexForStart + 1, start.length() - seperatorIndexForStart));
+    int endHour = stoi(end.substr(0, seperatorIndexForEnd));
+    int endMinute = stoi(end.substr(seperatorIndexForEnd + 1, end.length() - seperatorIndexForEnd));
 
-    LOG(DEBUG) << "Start: " << ts.startHour << ":" << ts.startMinute;
-    LOG(DEBUG) << "End: " << ts.endHour << ":" << ts.endMinute;
+    ts.startTime = startHour * 100 + startMinute;
+    ts.endTime = endHour * 100 + endMinute;
+
+    LOG(DEBUG) << start << "->" << end  << 
+      "," << ts.startTime << "->" << ts.endTime;
   }
 }
 
@@ -65,12 +67,12 @@ void operator >> (const YAML::Node& node, OutputConfig& ocfg) {
 
 void operator >> (const YAML::Node& node, GeneralConfig& gcfg) {
   LOG(DEBUG) << "Parsing general settings";
-  gcfg.camera_id = node["camera_id"].as<unsigned int>();
-  gcfg.record_sec = node["record_sec"].as<float>();
-  gcfg.reduction_factor = node["reduction_factor"].as<unsigned int>();
-  gcfg.min_contour_area = node["min_contour_area"].as<unsigned int>();
-  gcfg.adaptive_rate = node["adaptive_rate"].as<float>();
-  gcfg.kernel_size = node["kernel_size"].as<unsigned int>();
+  gcfg.camera_id = node["camera_id"].as<int>();
+  gcfg.record_sec = node["record_sec"].as<double>();
+  gcfg.reduction_factor = node["reduction_factor"].as<int>();
+  gcfg.min_contour_area = node["min_contour_area"].as<double>();
+  gcfg.adaptive_rate = node["adaptive_rate"].as<double>();
+  gcfg.kernel_size = node["kernel_size"].as<int>();
 }
 
 void operator >> (const YAML::Node& node, Setting& syscfg) {
@@ -80,3 +82,16 @@ void operator >> (const YAML::Node& node, Setting& syscfg) {
   node["schedules"] >> syscfg.schedule;
 }
 
+/***** extraction operator for the structures *****/
+/**************************************************/
+
+
+
+
+/*********************************************/
+/***** insertion operator for the structures *****/
+
+
+
+/***** insertion operator for the structures *****/
+/*********************************************/

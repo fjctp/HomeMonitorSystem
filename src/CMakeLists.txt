@@ -9,7 +9,7 @@ include_directories("include")
 add_subdirectory("libs")
 
 # Declare the executable target built from your sources
-add_executable(Nest main.cpp Nest.cpp EagleEye.cpp Camera.cpp
+add_executable(Nest main.cpp Nest.cpp EagleEye.cpp FrameGrabber.cpp
   FrameWriter.cpp ImageProcessor.cpp Scheduler.cpp)
 
 # Link with libraries
@@ -17,6 +17,7 @@ target_link_libraries(Nest Configuration)
 target_link_libraries(Nest DateTime)
 target_link_libraries(Nest Status)
 
+# link with 3rd parties
 target_link_libraries(Nest ${OpenCV_LIBS})
 if(WIN32)
   target_link_libraries(Nest libyaml-cpp)

@@ -11,6 +11,10 @@ Scheduler::Scheduler() : Clock() {
 
 }
 
+Scheduler::~Scheduler() {
+
+}
+
 // set "ScheduleConfig" and timestamp format string
 void Scheduler::initialize(ScheduleConfig newscfg, string new_format_str) {
   Clock::initialize(new_format_str);
@@ -33,11 +37,11 @@ bool Scheduler::check(bool force) {
   }
 
   bool check_time_result = check_time();
-  LOG(DEBUG) << ">>>>check_time: " << check_time_result;
+  LOG(DEBUG) << "<CHECK>," << check_time_result;
   return check_weekday() && check_time_result;
 }
 
-// call to update object's variables with current time
+// update internal time
 void Scheduler::update() {
   Clock::update();
   now_info = localtime(&now);
@@ -50,51 +54,17 @@ bool Scheduler::check_weekday() {
 }
 bool Scheduler::check_time()
 {
-  LOG(DEBUG) << "CHECK_TIME";
   for (size_t i = 0; i < dcfg.timeslots.size(); i++) {
-    unsigned int nowHour = (unsigned int)now_info->tm_hour;
-    unsigned int nowMinute = (unsigned int)now_info->tm_min;
+    int nowTime = (now_info->tm_hour*100) + now_info->tm_min;
 
-    unsigned int startHour = dcfg.timeslots[i].startHour;
-    unsigned int endHour = dcfg.timeslots[i].endHour;
-    unsigned int startMinute = dcfg.timeslots[i].startMinute;
-    unsigned int endMinute = dcfg.timeslots[i].endMinute;
+    int startTime = dcfg.timeslots[i].startTime;
+    int endTime = dcfg.timeslots[i].endTime;
 
-    LOG(DEBUG) << ">>" << i;
-    LOG(DEBUG) << "Now: " << nowHour << ":" << nowMinute;
-    LOG(DEBUG) << "Hour: " << startHour << "->" << endHour;
-    LOG(DEBUG) << "Minute: " << startMinute << "->" << endMinute;
+    LOG(DEBUG) << "<CHECK_TIME>," << i << ",N," << nowTime << 
+      ",S," << startTime << ",E," << endTime;
 
-    LOG(DEBUG) << check_hour(nowHour, startHour, endHour);
-    LOG(DEBUG) << check_minute(nowMinute, startMinute, endMinute);
-
-    bool hour_minute_result = (check_hour(nowHour, startHour, endHour) &&
-      check_minute(nowMinute, startMinute, endMinute));
-    bool hour_result = check_hour(nowHour, startHour, endHour);
-
-    LOG(DEBUG) << "hour_minute_result: " << hour_minute_result;
-    LOG(DEBUG) << "hour_result: " << hour_result;
-
-    if (((nowHour == startHour) || (nowHour == endHour)) && hour_minute_result)
-      // at the starting or ending point, check hour and minute
-      return true;
-    else if (((nowHour >= startHour) && (nowHour < endHour)) && hour_result)
-      // in between the schedule, check hour only
+    if ((nowTime >= startTime) && (nowTime < endTime))
       return true;
   }
-  return false;
-}
-bool Scheduler::check_hour(unsigned int nowHour, unsigned int startHour, unsigned int endHour)
-{
-  if((nowHour >= startHour) && (nowHour <= endHour))
-    // if hour is within range
-    return true;
-  return false;
-}
-bool Scheduler::check_minute(unsigned int nowMinute, unsigned int startMinute, unsigned int endMinute)
-{
-  if ((nowMinute >= startMinute) && (nowMinute < endMinute))
-    // if minute is within range
-    return true;
   return false;
 }

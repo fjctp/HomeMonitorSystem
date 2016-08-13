@@ -5,14 +5,14 @@ general:
   # reduce the frame size for processing
   reduction_factor: 2
   # use for background extractor
-  # default: -1
-  adaptive_rate: -1
+  # default: -1.0
+  adaptive_rate: -1.0
   # use for morphology
   # incease: reduce noise, but less sensative to movement
   kernel_size: 6
   # use for motion detection
   # if the contour area is bigger than defined, there is movement
-  min_contour_area: 350
+  min_contour_area: 350.0
 
 output:
   dir: "./" # must include "/" at the end

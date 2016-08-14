@@ -5,7 +5,6 @@
 #include <thread>
 #include <opencv2/opencv.hpp>
 
-//#include "Timer.hpp"
 #include "md_config.hpp"
 
 using namespace std;
@@ -21,6 +20,7 @@ public:
 
   int ready();
   void get(myMat& mat);
+  double getFPS();
 
 private:
   void thread_update();
@@ -33,10 +33,9 @@ private:
 
   int cameraId;
   chrono::microseconds grabFramePeriodMicroSec;
-  //Timer timer0;
 
   atomic_int count;
-  atomic_int fps; // for debug
+  atomic_int fps;
 
   myMat frame;
   cv::VideoCapture cam;

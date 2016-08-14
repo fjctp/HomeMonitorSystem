@@ -5,6 +5,7 @@
 #include "easylogging++.h"
 
 #include "FrameGrabber.hpp"
+#include "Timer.hpp"
 #include "md_config.hpp"
 
 using namespace std;
@@ -81,19 +82,34 @@ void FrameGrabber::get(myMat& mat) {
   resetCount();
 }
 
+double FrameGrabber::getFPS() {
+  return (double) fps.load();
+}
+
 /*
   Called by a thread to get a new frame from the camera
   every X sec (related to FPS setting).
   @private
 */
 void FrameGrabber::thread_update() {
-  //timer0.reset();
+  int fps_count = 0;
+  Timer timer0 = Timer();
+  timer0.initialize();
+  timer0.reset();
   while (true) {
-    //if (timer0.get_dt_mircosec() > grabFramePeriodMicroSec.count()) {
-      grabFrameFromCam();
-      this_thread::sleep_for(grabFramePeriodMicroSec);
-    //}
-    //this_thread::sleep_for(chrono::milliseconds(1));
+    grabFrameFromCam(); // get latest frame from cam
+
+    // calculate FPS
+    fps_count++;
+    if (timer0.get_dt_millisec() > 200ll) {
+      fps = fps_count*5;
+      fps_count = 0;
+      timer0.reset();
+      LOG(WARNING) << "FPS: " << getFPS();
+    }
+
+    // wait for a certain time (defined as FPS) before getting new frame
+    this_thread::sleep_for(grabFramePeriodMicroSec);
   }
 }
 
@@ -103,7 +119,6 @@ void FrameGrabber::thread_update() {
 */
 void FrameGrabber::grabFrameFromCam() {
   cam >> frame;
-  LOG(WARNING) << "FPS: " << fps++;
   incrementCount();
 }
 

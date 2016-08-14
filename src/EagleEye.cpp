@@ -122,7 +122,7 @@ void EagleEye::thread_loop() {
     // continue saving video if in RECORD mode, 
     // otherwise close the file
     if (status.check(status.RECORD))
-      fw.record(filetimestamp, frame);
+      fw.record(filetimestamp, frame, camFrameGrabber.getFPS());
     else if (!status.check(status.RECORD))
       fw.stop();
   }

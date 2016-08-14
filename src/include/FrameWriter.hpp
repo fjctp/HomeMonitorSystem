@@ -16,7 +16,7 @@ public:
   void initialize(OutputConfig newCfg);
 
   void save(string timestamp_str, myMat frame);
-  void record(string timestamp_str, myMat frame);
+  void record(string timestamp_str, myMat frame, double fps);
   void stop();
 
   void release();

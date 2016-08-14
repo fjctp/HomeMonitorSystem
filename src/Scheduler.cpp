@@ -16,7 +16,7 @@ Scheduler::~Scheduler() {
 }
 
 // set "ScheduleConfig" and timestamp format string
-void Scheduler::initialize(ScheduleConfig newscfg, string new_format_str) {
+void Scheduler::initialize(ScheduleConfig newscfg, std::string new_format_str) {
   Clock::initialize(new_format_str);
   scfg = newscfg;
   check(true); // force check to initialize internal variables

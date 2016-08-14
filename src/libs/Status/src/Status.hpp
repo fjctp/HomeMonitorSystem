@@ -3,8 +3,6 @@
 #include <string>
 #include <atomic>
 
-using namespace std;
-
 class Status {
 public:
   // Assumptions: -1: exit mode, 0: idle mode
@@ -21,13 +19,13 @@ public:
 
   virtual bool check(int checkState);
   virtual int getId();
-  virtual string getName();
+  virtual std::string getName();
 
 protected:
-  atomic_int state;
-  atomic_bool ready;
+  std::atomic_int state;
+  std::atomic_bool ready;
 
-  const string states_name[4] = {"Terminate", "Standby", "Monitor", "Record"};
+  const std::string states_name[4] = {"Terminate", "Standby", "Monitor", "Record"};
 };
 
 #endif //STATUS_HPP

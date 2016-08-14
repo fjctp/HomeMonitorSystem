@@ -1,7 +1,6 @@
 #ifndef EAGLEEYE_HPP
 #define EAGLEEYE_HPP
 #include <thread>
-#include <string>
 
 #include "Settings.hpp"
 #include "FrameGrabber.hpp"
@@ -11,14 +10,12 @@
 #include "Status.hpp"
 #include "Timer.hpp"
 
-using namespace std;
-
 class EagleEye {
 public:
   EagleEye();
   ~EagleEye();
 
-  thread::id start(GeneralConfig newgcfg, OutputConfig newocfg, ScheduleConfig newscfg);
+  std::thread::id start(GeneralConfig newgcfg, OutputConfig newocfg, ScheduleConfig newscfg);
   void release();
 
 private:

@@ -7,12 +7,11 @@
 
 #include "Settings.hpp"
 
-using namespace std;
 namespace po = boost::program_options;
 
 struct Options {
-  string path2yaml;
-  string path2log;
+  std::string path2yaml;
+  std::string path2log;
 };
 
 // OptionsParser Class

@@ -5,14 +5,12 @@
 #include "Clock.hpp"
 #include "Settings.hpp"
 
-using namespace std;
-
 class Scheduler: private Clock {
 public:
   Scheduler();
   virtual ~Scheduler();
 
-  void initialize(ScheduleConfig newscfg, string new_format_str = "%m%d%y_%H%M%S");
+  void initialize(ScheduleConfig newscfg, std::string new_format_str = "%m%d%y_%H%M%S");
   bool check(bool force = false);
 
 private:
@@ -25,7 +23,7 @@ private:
   DayConfig dcfg;
 
   struct tm *now_info;
-  const string weekdays[7] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+  const std::string weekdays[7] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 };
 
 #endif

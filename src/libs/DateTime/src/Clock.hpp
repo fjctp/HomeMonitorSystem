@@ -4,20 +4,18 @@
 #include <ctime>
 #include <string>
 
-using namespace std;
-
 class Clock {
 public:
   Clock();
   virtual ~Clock();
-  virtual void initialize(string new_format_str = "%m%d%y_%H%M%S");
-  virtual string now2string();
+  virtual void initialize(std::string new_format_str = "%m%d%y_%H%M%S");
+  virtual std::string now2string();
 
 protected:
   virtual void update();
-  virtual string time2string(const time_t t);
+  virtual std::string time2string(const time_t t);
 
-  string format_str;
+  std::string format_str;
   time_t now;
 };
 

@@ -7,8 +7,6 @@
 
 #include "md_config.hpp"
 
-using namespace std;
-
 class FrameGrabber {
 public:
   FrameGrabber();
@@ -29,13 +27,13 @@ private:
   void resetCount();
   void incrementCount();
 
-  thread::id tid;
+  std::thread::id tid;
 
   int cameraId;
-  chrono::microseconds grabFramePeriodMicroSec;
+  std::chrono::microseconds grabFramePeriodMicroSec;
 
-  atomic_int count;
-  atomic_int fps;
+  std::atomic_int count;
+  std::atomic_int fps;
 
   myMat frame;
   cv::VideoCapture cam;

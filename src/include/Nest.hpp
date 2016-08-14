@@ -6,8 +6,6 @@
 #include "Settings.hpp"
 #include "EagleEye.hpp"
 
-using namespace std;
-
 class Nest {
 public:
   Nest();
@@ -17,8 +15,8 @@ public:
   void release();
 
 private:
-  thread::id ptid;
-  vector<thread::id> tids;
+  std::thread::id ptid;
+  std::vector<std::thread::id> tids;
 };
 
 #endif

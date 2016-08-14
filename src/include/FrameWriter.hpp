@@ -6,8 +6,6 @@
 #include "md_config.hpp"
 #include "Settings.hpp"
 
-using namespace std;
-
 class FrameWriter {
 public:
   FrameWriter();
@@ -15,14 +13,14 @@ public:
 
   void initialize(OutputConfig newCfg);
 
-  void save(string timestamp_str, myMat frame);
-  void record(string timestamp_str, myMat frame, double fps);
+  void save(std::string timestamp_str, myMat frame);
+  void record(std::string timestamp_str, myMat frame, double fps);
   void stop();
 
   void release();
   
 protected:
-  string get_fullpath(string timestamp_str, string extension);
+  std::string get_fullpath(std::string timestamp_str, std::string extension);
 
   cv::VideoWriter vWriter;
   OutputConfig cfg;

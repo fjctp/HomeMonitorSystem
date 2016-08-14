@@ -68,7 +68,7 @@ void operator >> (const YAML::Node& node, OutputConfig& ocfg) {
 void operator >> (const YAML::Node& node, GeneralConfig& gcfg) {
   LOG(DEBUG) << "Parsing general settings";
   gcfg.camera_id = node["camera_id"].as<int>();
-  gcfg.record_sec = node["record_sec"].as<double>();
+  gcfg.record_sec = node["record_sec"].as<int>();
   gcfg.reduction_factor = node["reduction_factor"].as<int>();
   gcfg.min_contour_area = node["min_contour_area"].as<double>();
   gcfg.adaptive_rate = node["adaptive_rate"].as<double>();

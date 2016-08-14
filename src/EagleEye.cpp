@@ -24,7 +24,7 @@ thread::id EagleEye::start(GeneralConfig newgcfg, OutputConfig newocfg, Schedule
   cam_id = newgcfg.camera_id;
   record_sec = newgcfg.record_sec;
 
-  camFrameGrabber.initialize(cam_id, 30.0); // hard coded for 30 FPS
+  camFrameGrabber.initialize(cam_id, 15.0); // hard coded for 15 FPS
   if (!camFrameGrabber.isOpened()) {
     LOG(WARNING) << "Cannot start camera id " << cam_id;
     return this_thread::get_id(); // return parent id
@@ -96,8 +96,6 @@ void EagleEye::thread_main() {
 */
 void EagleEye::thread_loop() {
   if (camFrameGrabber.ready() > 0) {
-  //if (true) {
-    //LOG(INFO) << "<EagleEye::thread_loop>";
     camFrameGrabber >> frame;
     double detected_contour_area = ip.process(frame);
     if (detected_contour_area>0)

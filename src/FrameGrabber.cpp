@@ -7,14 +7,15 @@
 #include "FrameGrabber.hpp"
 #include "md_config.hpp"
 
-FrameGrabber::FrameGrabber()
-{
+using namespace std;
+
+FrameGrabber::FrameGrabber() {
   cameraId = 0;
-  grabFramePeriod = 0;
+  grabFramePeriodMicroSec = chrono::microseconds(0);
+  fps = 0;
   resetCount();
 }
-FrameGrabber::~FrameGrabber()
-{
+FrameGrabber::~FrameGrabber() {
   if (isOpened())
     release();
 }
@@ -23,18 +24,19 @@ FrameGrabber::~FrameGrabber()
   Initialize with settings and start a new thread to get frame from the camera.
   Since IO operations are slow, we do not want to block other operations.
 */
-bool FrameGrabber::initialize(int newCameraId, double newFPS)
-{
+bool FrameGrabber::initialize(int newCameraId, double newFPS) {
   cameraId = newCameraId;
-  grabFramePeriod = 1.0/ newFPS;
+  grabFramePeriodMicroSec = chrono::microseconds(
+    (int)floor(1.0/newFPS*1e6));
   resetCount();
 
   if (cam.isOpened())
     cam.release();
   cam.open(cameraId);
 
-  timer0.initialize();
+  //timer0.initialize();
   if (cam.isOpened()) {
+    cam.set(cv::CAP_PROP_FPS, newFPS);
     thread t1(&FrameGrabber::thread_update, this);
     tid = t1.get_id();
     t1.detach();
@@ -47,8 +49,7 @@ bool FrameGrabber::initialize(int newCameraId, double newFPS)
   Check if the FrameGrabber is opened for reading.
   @public
 */
-bool FrameGrabber::isOpened()
-{
+bool FrameGrabber::isOpened() {
   return cam.isOpened();
 }
 
@@ -56,8 +57,7 @@ bool FrameGrabber::isOpened()
   Release resource.
   @public
 */
-void FrameGrabber::release()
-{
+void FrameGrabber::release() {
   if (isOpened())
     cam.release();
 }
@@ -68,9 +68,7 @@ void FrameGrabber::release()
   it means some frames are missed.
   @public
 */
-int FrameGrabber::ready()
-{
-  //LOG(INFO) << "<FrameGrabber::READY>," << count.load();
+int FrameGrabber::ready() {
   return count.load();
 }
 
@@ -78,8 +76,7 @@ int FrameGrabber::ready()
   Get the latest frame from the camera and reset the counter.
   @public
 */
-void FrameGrabber::get(myMat& mat)
-{
+void FrameGrabber::get(myMat& mat) {
   frame.copyTo(mat);
   resetCount();
 }
@@ -89,13 +86,14 @@ void FrameGrabber::get(myMat& mat)
   every X sec (related to FPS setting).
   @private
 */
-void FrameGrabber::thread_update()
-{
+void FrameGrabber::thread_update() {
+  //timer0.reset();
   while (true) {
-    if (timer0.get_dt_sec() > grabFramePeriod) {
+    //if (timer0.get_dt_mircosec() > grabFramePeriodMicroSec.count()) {
       grabFrameFromCam();
-    }
-    this_thread::sleep_for(chrono::milliseconds(1));
+      this_thread::sleep_for(grabFramePeriodMicroSec);
+    //}
+    //this_thread::sleep_for(chrono::milliseconds(1));
   }
 }
 
@@ -103,24 +101,20 @@ void FrameGrabber::thread_update()
   Get frame from the camera and increase the counter.
   @private
 */
-void FrameGrabber::grabFrameFromCam()
-{
+void FrameGrabber::grabFrameFromCam() {
   cam >> frame;
-  timer0.reset();
+  LOG(WARNING) << "FPS: " << fps++;
   incrementCount();
 }
 
-void FrameGrabber::resetCount()
-{
+void FrameGrabber::resetCount() {
   count = 0;
 }
 
-void FrameGrabber::incrementCount()
-{
+void FrameGrabber::incrementCount() {
   count++;
 }
 
-void operator >> (FrameGrabber & cam, myMat & mat)
-{
-  cam.get(mat);
+void operator >> (FrameGrabber & grabber, myMat & mat) {
+  grabber.get(mat);
 }

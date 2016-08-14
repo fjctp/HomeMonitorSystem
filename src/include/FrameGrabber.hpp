@@ -5,15 +5,17 @@
 #include <thread>
 #include <opencv2/opencv.hpp>
 
-#include "Timer.hpp"
+//#include "Timer.hpp"
 #include "md_config.hpp"
+
+using namespace std;
 
 class FrameGrabber {
 public:
   FrameGrabber();
   ~FrameGrabber();
 
-  bool initialize(int newCameraId=0, double newFPS=30.0);
+  bool initialize(int newCameraId=0, double newFPS=15.0);
   bool isOpened();
   void release();
 
@@ -30,14 +32,16 @@ private:
   thread::id tid;
 
   int cameraId;
-  double grabFramePeriod;
-  atomic_int count;
+  chrono::microseconds grabFramePeriodMicroSec;
+  //Timer timer0;
 
-  Timer timer0;
+  atomic_int count;
+  atomic_int fps; // for debug
+
   myMat frame;
   cv::VideoCapture cam;
 };
 
-void operator >> (FrameGrabber& cam, myMat& mat);
+void operator >> (FrameGrabber& grabber, myMat& mat);
 
 #endif // !FRAMEGRABBER_HPP

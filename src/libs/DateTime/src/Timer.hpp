@@ -1,8 +1,10 @@
 #ifndef TIMER_HPP
 #define TIMER_HPP
 
-#include <ctime>
+#include <chrono>
 #include "Clock.hpp"
+
+using namespace std;
 
 class Timer{
 public:
@@ -10,11 +12,12 @@ public:
   virtual void initialize();
 
   virtual void reset();
-  virtual double get_dt_msec();
-  virtual double get_dt_sec();
+  virtual long long get_dt_mircosec();
+  virtual long long get_dt_millisec();
+  virtual long long get_dt_sec();
 
 private:
-  clock_t t0;
+  chrono::high_resolution_clock::time_point t0;
 };
 
 #endif

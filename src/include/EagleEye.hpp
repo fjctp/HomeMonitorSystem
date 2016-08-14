@@ -39,7 +39,7 @@ private:
   Status status;
 
   int cam_id;
-  double record_sec;
+  int record_sec;
   myMat frame;
   FrameGrabber camFrameGrabber;
 };

@@ -26,8 +26,15 @@ void FrameWriter::save(string timestamp_str, myMat frame) {
 void FrameWriter::record(string timestamp_str, myMat frame) {
   if (!vWriter.isOpened()) {
     string fullpath = get_fullpath(timestamp_str, cfg.video_ext);
-    bool success = vWriter.open(fullpath, cv::VideoWriter::fourcc('M', 'J', 'P', 'G'),
-      10, frame.size(), true);
+    //int fourcc = cv::VideoWriter::fourcc('M', 'J', 'P', 'G'); // W5000kb
+    int fourcc = cv::VideoWriter::fourcc('W', 'M', 'V', '1'); // W600kb
+    //int fourcc = cv::VideoWriter::fourcc('W', 'M', 'V', '2'); // W600kb
+    //int fourcc = cv::VideoWriter::fourcc('W', 'M', 'V', '3'); // WError
+    //int fourcc = cv::VideoWriter::fourcc('X', '2', '6', '4'); // WError
+    //int fourcc = cv::VideoWriter::fourcc('H', '2', '6', '4'); // WError
+    //int fourcc = cv::VideoWriter::fourcc('X', 'V', 'I', 'D'); // W700kb
+    //int fourcc = cv::VideoWriter::fourcc('D', 'I', 'V', 'X'); // W600kb
+    bool success = vWriter.open(fullpath, fourcc, 10, frame.size(), true);
   }
 
   // convert from myMat (Mat/UMat) to Mat, VideoWriter accepts Mat only

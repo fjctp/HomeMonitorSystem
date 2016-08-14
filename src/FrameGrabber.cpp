@@ -92,20 +92,24 @@ double FrameGrabber::getFPS() {
   @private
 */
 void FrameGrabber::thread_update() {
+  const long long calc_sample_time = 500ll;
+  const int gain = 2;
   int fps_count = 0;
+
   Timer timer0 = Timer();
   timer0.initialize();
   timer0.reset();
+
   while (true) {
     grabFrameFromCam(); // get latest frame from cam
 
     // calculate FPS
     fps_count++;
-    if (timer0.get_dt_millisec() > 200ll) {
-      fps = fps_count*5;
+    if (timer0.get_dt_millisec() > calc_sample_time) {
+      fps = fps_count*gain;
       fps_count = 0;
       timer0.reset();
-      LOG(WARNING) << "FPS: " << getFPS();
+      //LOG(WARNING) << "FPS: " << getFPS();
     }
 
     // wait for a certain time (defined as FPS) before getting new frame

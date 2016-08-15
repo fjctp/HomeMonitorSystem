@@ -24,7 +24,7 @@ set(YAML_CPP_INCLUDEDIR "${YAML_CPP_INCLUDEDIR}" CACHE PATH "YAML include direct
 set(YAML_CPP_LIBRARYDIR "${YAML_CPP_LIBRARYDIR}" CACHE PATH "YAML library directory")
 
 # set CXX flags
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DELPP_THREAD_SAFE")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -DELPP_THREAD_SAFE")
 #if(CMAKE_COMPILER_IS_GNUCXX)
 #    message(STATUS "GCC detected, adding compile flags")
 #    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")

@@ -19,12 +19,16 @@ target_link_libraries(Nest Status)
 
 # link with 3rd parties
 target_link_libraries(Nest ${OpenCV_LIBS})
-if(WIN32)
+
+
+if(MSVC)
   target_link_libraries(Nest libyaml-cpp)
-endif(WIN32)
-if(UNIX)
+elseif(MINGW)
+  target_link_libraries(Nest pthread)
+  target_link_libraries(Nest boost_program_options-mgw54-mt-1_61)
   target_link_libraries(Nest yaml-cpp)
+elseif(UNIX)
   target_link_libraries(Nest pthread)
   target_link_libraries(Nest boost_program_options)
-endif(UNIX)
-
+  target_link_libraries(Nest yaml-cpp)
+endif(MSVC)

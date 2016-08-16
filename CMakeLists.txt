@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 2.8)
 include(cmake/functions.cmake)
-set(CMAKE_CONFIGURATION_TYPES "Release;Debug;" CACHE PATH "Build type")
+
+# build type, Release or Debug
+set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build type")
+set(CMAKE_CONFIGURATION_TYPES "${CMAKE_BUILD_TYPE}" CACHE STRING "Build type")
 
 # define project settings
 project("Surveillance System")

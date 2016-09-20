@@ -19,13 +19,8 @@ public:
   void release();
 
 private:
-  /*
-   * thread        runs schedule_loop until the program/system shuts down
-   * schedule_loop runs process_loop until current time is not on the schedule
-   * process_loop  never stops
-   */
   void thread_main();
-  void thread_loop();
+  void process_loop();
 
   ImageProcessor ip;
   FrameWriter fw;
@@ -33,10 +28,11 @@ private:
   Clock clock0;
   Timer timer0;
   Scheduler s;
-  Status status;
 
   int cam_id;
   int record_sec;
+  Status status;
+
   myMat frame;
   FrameGrabber camFrameGrabber;
 };

@@ -26,7 +26,7 @@ thread::id EagleEye::start(GeneralConfig newgcfg, OutputConfig newocfg, Schedule
 
   camFrameGrabber.initialize(cam_id, 15.0); // hard coded for 15 FPS
   if (!camFrameGrabber.isOpened()) {
-    LOG(WARNING) << "Cannot start camera id " << cam_id;
+    LOG(WARNING) << "Cannot start camera " << cam_id;
     return this_thread::get_id(); // return parent id
   }
 
@@ -50,7 +50,7 @@ thread::id EagleEye::start(GeneralConfig newgcfg, OutputConfig newocfg, Schedule
   @public
 */
 void EagleEye::release() {
-  LOG(INFO) << "Release resources";
+  LOG(INFO) << "Releasing camera " << cam_id;
   ip.release();
   fw.release();
   if (camFrameGrabber.isOpened())
@@ -64,23 +64,33 @@ void EagleEye::release() {
   @private
 */
 void EagleEye::thread_main() {
-  LOG(INFO) << "EagleEye started using camera id " << cam_id;
+  LOG(INFO) << "EagleEye started using camera " << cam_id;
   timer0.reset();
 
   while (!status.check(status.TERMINATE)) {
+    // main loop
     while (s.check() && !status.check(status.TERMINATE)) {
+      // schedule loop
+
+      /* if switched from STANDBY
+         change the current mode to MONITOR  */
       if (status.check(status.STANDBY)) {
         status.set(status.MONITOR);
         status.confirm();
       }
-      thread_loop();
+
+      // grab frame and process it
+      process_loop();
+      this_thread::sleep_for(chrono::milliseconds(1));
     }
 
-    // Not in schedule, slow down to preserve resource
+    // Not in schedule, switch to STANDBY
     if (!status.check(status.STANDBY)) {
       status.set(status.STANDBY);
       status.confirm();
     }
+
+    // Not in schedule, slow down to preserve resource
     this_thread::sleep_for(chrono::seconds(1));
   }
   
@@ -94,7 +104,7 @@ void EagleEye::thread_main() {
   If yes, take a snapshot and start recording.
   @private
 */
-void EagleEye::thread_loop() {
+void EagleEye::process_loop() {
   if (camFrameGrabber.ready() > 0) {
     camFrameGrabber >> frame;
     double detected_contour_area = ip.process(frame);
@@ -126,5 +136,4 @@ void EagleEye::thread_loop() {
     else if (!status.check(status.RECORD))
       fw.stop();
   }
-  this_thread::sleep_for(chrono::milliseconds(1));
 }

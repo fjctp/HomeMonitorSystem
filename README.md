@@ -1,4 +1,4 @@
-# Surveillance System
+# Home Monitor System
 Provide basic motion detection and video recording capability. It is tested on Windows 10 and Raspberry Pi 2.
 For RPi, please make sure NEON support is enabled when compiling OpenCV library.
 
